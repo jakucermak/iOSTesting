@@ -1,0 +1,21 @@
+#python virtual envirnonments
+*venv
+
+*venv/*
+
+#IDE configarution folders
+.idea/*
+.vscode/
+
+
+#macOS .DS_Store
+.DS_Store
+
+#WDA Repository
+WebDriverAgent/
+
+#logs
+*_log.txt
+
+#Screenshot Folder
+screenshots/
