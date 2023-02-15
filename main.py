@@ -1,41 +1,22 @@
-import time
-from typing import Union
 
-from fastapi import FastAPI, Path, Query, Response, status, Request
+import uvicorn
+from fastapi import FastAPI, BackgroundTasks 
 
-from utils.utils import start_client, read_ip_from_log
+from utils.utils import available_devices, start_wda_service
 
 app = FastAPI()
 
-clients_processes = {}
-clients_ip = {}
-
 
 @app.get("/")
-async def root(request: Request):
-    print(request.client.host)
-    return {"message": "server is running"}
-
-@app.post("/start/{name}")
-async def start(response: Response,
-                name: str = Path(title="Name of iphone to start debugging on"),
-                q: Union[str, None] = Query(default=None, alias="item-query"),
-                ):
-    clients_processes[name] = start_client(name)
-    time.sleep(30)
-    try:
-        clients_ip[name] = read_ip_from_log(name)
-        return {"message": name, "device_ip": clients_ip[name]}
-    except:
-        clients_processes[name].kill()
-        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-        return {"Service could not start"}
+async def root():
+    return {"available_devices": available_devices()}
 
 
-@app.post("/stop/{name}")
-async def stop(name: str = Path(title="Name of iPhone to stop debugging on"),
-               q: Union[str, None] = Query(default=None, alias="item-query"), ):
-    clients_processes[name].kill()
-    clients_processes.pop(name)
-    if not name in clients_processes:
-        return {"message": "successfully terminated testing service"}
+@app.post("/start/")
+async def startDevice(udid: str, port: int,background_task: BackgroundTasks):
+    background_task.add_task(start_wda_service, udid,port)
+    return {"message" : "staring wdaservice in background" }
+
+
+if __name__ == "__main__":
+    uvicorn.run(app,host="0.0.0.0", port=8000)
