@@ -17,5 +17,6 @@ WebDriverAgent/
 #logs
 *_log.txt
 
-#Screenshot Folder
-screenshots/
+#screenshots
+
+./screenshots/*.png

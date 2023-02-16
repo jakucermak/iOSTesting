@@ -23,21 +23,21 @@ async def start_device(udid: str, port: int, background_task: BackgroundTasks):
 
     return {"message": "starting wda service in background"}
 
+
 @app.post("/start/client/")
-async def start_client( udid: str, port: int):
+async def start_client(udid: str, port: int):
     client = IOSCLient(port)
-    
-    clients[port] = client
+
+    clients[udid] = client
     print(clients)
     return clients[port].client.status()
 
+
 @app.post("/client/")
-async def client_script(port:int ):
-    while True:
-        client = clients[port].script()
-    
+async def client_script(port: int, background_task: BackgroundTasks):
+
+    background_task.add_task(clients[udid].script)
     return "script is running..."
-    
 
 
 if __name__ == "__main__":
