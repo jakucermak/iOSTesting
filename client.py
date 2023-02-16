@@ -17,7 +17,7 @@ class IOSCLient():
             c = self.client
             c.home()
 
-            c.screenshot("/screenshots/init.png")
+            c.screenshot("./screenshots/init.png")
 
             c.swipe_left()
 
@@ -29,7 +29,7 @@ class IOSCLient():
             c.click(133, 200)
             print(c.app_current())
 
-            c.screenshot("screenshots/contacts.png")
+            c.screenshot("./screenshots/contacts.png")
 
             c.home()
             c.swipe(370, 0, 370, 200, 0.5)

@@ -30,11 +30,11 @@ async def start_client(udid: str, port: int):
 
     clients[udid] = client
     print(clients)
-    return clients[port].client.status()
+    return clients[udid].client.status()
 
 
 @app.post("/client/")
-async def client_script(port: int, background_task: BackgroundTasks):
+async def client_script(udid: str, background_task: BackgroundTasks):
 
     background_task.add_task(clients[udid].script)
     return "script is running..."
